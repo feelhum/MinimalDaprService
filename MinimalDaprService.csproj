@@ -7,4 +7,9 @@
     <PackageReference Include="Dapr.AspNetCore" Version="1.15.3" />
     <PackageReference Include="Dapr.Extensions.Configuration" Version="1.15.3" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="components\redis-config.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

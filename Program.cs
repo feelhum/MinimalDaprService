@@ -4,23 +4,24 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-// 添加 Dapr 支持
-builder.Services.AddDaprClient();
+var daprClient = new DaprClientBuilder().Build();
 
-// 加载 Dapr 配置存储（如 Nacos）
 builder.Configuration.AddDaprConfigurationStore(
-    store: "nacos",
-    keys: new[] { "myconfig" }, // 你需要在 Nacos 中设置这个 key
-    client: new DaprClientBuilder().Build(),
-    sidecarWaitTimeout: TimeSpan.FromSeconds(5)
+    store: "configstore",
+    keys: new List<string> { "myapp/config/mykey" },
+    client: daprClient,
+    sidecarWaitTimeout: TimeSpan.FromSeconds(10)
 );
-
-builder.Services.AddControllers();
+// 示例：获取配置
+var configValue = builder.Configuration["myapp/config/mykey"];
+Console.WriteLine($"配置值：{configValue}");
+builder.Services.AddControllers().AddDapr(); // 注册 Dapr 相关服务;
 var app = builder.Build();
-
+app.MapSubscribeHandler(); // 可选：用于 Dapr Pub/Sub
 app.MapControllers();
 app.Run();
