@@ -1,0 +1,12 @@
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: appconfig
+spec:
+  metadata:
+    - name: nacosServer
+      value: "localhost:8848"
+    - name: namespace
+      value: "public"
+  scopes:
+    - MinimalDaprService
