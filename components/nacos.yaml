@@ -1,0 +1,15 @@
+﻿apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: nacos
+  namespace: default
+spec:
+  type: configuration.nacos
+  version: v1
+  metadata:
+    - name: endpoint
+      value: "http://localhost:8848"
+    - name: namespace
+      value: "public"
+    - name: group
+      value: "DEFAULT_GROUP"
